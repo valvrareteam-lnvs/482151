@@ -1,4 +1,4 @@
-name: Save new posts
+name: Update new posts
 
 on:
 #   schedule:
