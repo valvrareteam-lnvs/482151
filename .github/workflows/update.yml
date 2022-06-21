@@ -1,6 +1,8 @@
 name: Save new posts
 
 on:
+#   schedule:
+#     - cron: '0 */4 * * *'
   workflow_dispatch:
   
 jobs:
@@ -16,7 +18,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn
-      - run: yarn save
+      - run: yarn update
       - name: Update changes in GitHub repository
         run:  |
           git config --global user.name 'hentaivv-lnvs' 
