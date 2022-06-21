@@ -1,9 +1,8 @@
 name: Save new posts
 
 on:
-  schedule:
-#     “At minute 0 past every 2nd hour.”
-    - cron: '0 */4 * * *'
+#   schedule:
+#     - cron: '0 */4 * * *'
   workflow_dispatch:
   
 jobs:
