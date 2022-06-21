@@ -1,0 +1,19 @@
+{
+  "name": "hentaivv",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/hentaivv-lnvs/hentaivv.git",
+  "author": "hentaivv-lnvs <hentaivv@lnvs.net>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.11",
+    "read-file": "^0.2.0",
+    "write-file-utf8": "^2.0.1",
+    "xml2js": "^0.4.23"
+  },
+  "scripts": {
+    "save": "node save.js",
+    "update": "node update.js"
+  }
+}
