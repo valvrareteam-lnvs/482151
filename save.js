@@ -72,6 +72,7 @@ const save = async (urls) => {
       }).get()
       for (let index = 2; index <= chapterPagesLength; index++) {
         const { data: html } = await axios(`${url}/${index}/`)
+        html && await write(`docs/${qURL.pathname}/${index}.html`, html)
         const $lo = cheerio.load(html)
         chapterURLs = [...chapterURLs, ...$lo('.listchap.clearfix li a').map(function chapters () {
           return $(this).attr('href')
@@ -122,6 +123,7 @@ const save = async (urls) => {
       }).get()
       for (let index = 2; index <= chapterPagesLength; index++) {
         const { data: html } = await axios(`${url}/${index}/`)
+        html && await write(`docs/${qURL.pathname}/${index}.html`, html)
         const $lo = cheerio.load(html)
         chapterURLs = [...chapterURLs, ...$lo('.listchap.clearfix li a').map(function chapters () {
           return $(this).attr('href')
