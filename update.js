@@ -28,7 +28,7 @@ const getPage1 = async () => {
   const _res = await fetch(`https://hentaivv.com`)
   const _$ = cheerio.load(_res)
   const _urls = [..._$('#newest .col-first > .col-line-first .crop-text-1 > a').map(function list () {
-    return _$(this).attr('href')
+    return _$(this).attr('href').slice(0, -1)
   }).get()]
   return _urls
 }
