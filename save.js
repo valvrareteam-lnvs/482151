@@ -48,7 +48,7 @@ const write = require('write-file-utf8')
 
 const save = async (urls) => {
   for (let i = 0; i < urls.length; i++) {
-    console.log(i)
+    console.log(i, urls.length)
     const url = urls[i]
     const qURL = URL.parse(url, true)
     const pathURL = 'docs' + qURL.pathname + '.html'
@@ -71,7 +71,7 @@ const save = async (urls) => {
         return $(this).attr('href')
       }).get()
       for (let index = 2; index <= chapterPagesLength; index++) {
-        const { data: html } = await axios(url + index + '/')
+        const { data: html } = await axios(`${url}/${index}/`)
         const $lo = cheerio.load(html)
         chapterURLs = [...chapterURLs, ...$lo('.listchap.clearfix li a').map(function chapters () {
           return $(this).attr('href')
@@ -83,7 +83,7 @@ const save = async (urls) => {
           const pages = /\/(.+)$/g.exec(divpage)[1]
           chapterURLs[0] = url
           for (let j = 2; j <= pages; j++) {
-            chapterURLs = [...chapterURLs, `${url}${j}/`]
+            chapterURLs = [...chapterURLs, `${url}/${j}/`]
           }
         }
       }
@@ -96,8 +96,8 @@ const save = async (urls) => {
           // eslint-disable-next-line no-unused-vars
           const htmlFile = read.sync(pathChapterURL)
         } catch (error) {
-          console.log('🚀 update ~ i ~ j', i, j)
           const chapterHTML = await fetch(chapterURL)
+          console.log('🚀 update ~ i ~ j', i, j, chapterURL)
           if (!chapterHTML) {
             i--
             continue
@@ -121,7 +121,7 @@ const save = async (urls) => {
         return $(this).attr('href')
       }).get()
       for (let index = 2; index <= chapterPagesLength; index++) {
-        const { data: html } = await axios(url + index + '/')
+        const { data: html } = await axios(`${url}/${index}/`)
         const $lo = cheerio.load(html)
         chapterURLs = [...chapterURLs, ...$lo('.listchap.clearfix li a').map(function chapters () {
           return $(this).attr('href')
@@ -133,13 +133,13 @@ const save = async (urls) => {
           const pages = /\/(.+)$/g.exec(divpage)[1]
           chapterURLs[0] = url
           for (let j = 2; j <= pages; j++) {
-            chapterURLs = [...chapterURLs, `${url}${j}/`]
+            chapterURLs = [...chapterURLs, `${url}/${j}/`]
           }
         }
       }
       for (let j = 0; j < chapterURLs.length; j++) {
-        console.log('🚀 new ~ i ~ j', i, j)
         const chapterURL = chapterURLs[j].slice(0, -1)
+        console.log('🚀 new ~ i ~ j', i, j, chapterURL)
         const qChapterURL = URL.parse(chapterURL, true)
         const pathChapterURL = 'docs' + qChapterURL.pathname + '.html'
         const chapterHTML = await fetch(chapterURL)
@@ -155,11 +155,13 @@ const save = async (urls) => {
 }
 
 const start = async () => {
-  console.time('save')
-  const _urls = await getUrls()
-  await write('docs/index.html', JSON.stringify(_urls))
-  await save(_urls)
-  console.timeEnd('save')
+  try {
+    const _urls = await getUrls()
+    await write('docs/index.html', JSON.stringify(_urls))
+    await save(_urls)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 start()
